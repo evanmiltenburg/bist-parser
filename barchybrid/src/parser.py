@@ -31,7 +31,8 @@ if __name__ == '__main__':
     parser.add_option("--userl", action="store_true", dest="rlMostFlag", default=False)
     parser.add_option("--predict", action="store_true", dest="predictFlag", default=False)
     parser.add_option("--cnn-mem", type="int", dest="cnn_mem", default=512)
-
+    parser.add_option("--showbest", action="store_true", dest="show_best_epoch", default=False)
+    
     (options, args) = parser.parse_args()
     print 'Using external embedding:', options.external_embedding
 
@@ -49,15 +50,19 @@ if __name__ == '__main__':
 
         print 'Initializing blstm arc hybrid:'
         parser = ArcHybridLSTM(words, pos, rels, w2i, options)
-
+        
+        result_files = []
         for epoch in xrange(options.epochs):
             print 'Starting epoch', epoch
             parser.Train(options.conll_train)
             devpath = os.path.join(options.output, 'dev_epoch_' + str(epoch+1) + '.conll')
             utils.write_conll(devpath, parser.Predict(options.conll_dev))
             os.system('perl src/utils/eval.pl -g ' + options.conll_dev + ' -s ' + devpath  + ' > ' + devpath + '.txt &')
+            result_files.append(devpath + '.txt')
             print 'Finished predicting dev'
             parser.Save(os.path.join(options.output, options.model + str(epoch+1)))
+        if options.show_best_epoch:
+            utils.print_best_epoch(result_files, print_score=False, score_type='average')
     else:
         with open(options.params, 'r') as paramsfp:
             words, w2i, pos, rels, stored_opt = pickle.load(paramsfp)
