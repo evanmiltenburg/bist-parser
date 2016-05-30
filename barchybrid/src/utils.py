@@ -198,7 +198,8 @@ def select_first_file(filenames):
     "Helper function that returns the file with the lowest epoch number."
     return min((filename_to_num(fn),fn) for fn in filenames)
 
-def print_best_epoch(filenames, print_score=False, score_type='average'):
+# Unlabeled attachment is used in recent papers, so let's go with that score.
+def print_best_epoch(filenames, print_score=False, score_type='unlabeled_attachment'):
     """
     Prints the best epoch number. Import this function from parser.py.
     Filenames should be a list: ['dev_epoch_1.conll.txt', 'dev_epoch_2.conll.txt', ...]
