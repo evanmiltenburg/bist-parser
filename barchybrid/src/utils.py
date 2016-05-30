@@ -220,14 +220,16 @@ def stats(filename):
     "Print stats for conll file."
     with open(filename) as f:
         gen = read_conll(f, proj=True)
-        c = Counter(len(tokens) for tokens in gen)
+        lengths = [len(tokens) for tokens in gen]
+        c = Counter(lengths)
         print "Top-10 sentence lengths"
         print "-----------------------"
         print "Length\tOccurrences"
         for length, count in c.most_common()[:10]:
             print '\t'.join([str(length), str(count)])
         print "-----------------------"
-        print "Longest sentence: " + str(max(c))
-        print "Shortest sentence: " + str(min(c))
+        print "Total number of sentences: ", str(len(lengths))
+        print "Longest sentence: ", str(max(c))
+        print "Shortest sentence: ", str(min(c))
         print "-----------------------"
 
