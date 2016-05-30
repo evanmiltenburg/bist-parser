@@ -212,3 +212,22 @@ def print_best_epoch(filenames, print_score=False, score_type='unlabeled_attachm
     print "Best epoch:", best_epoch
     if print_score:
         print "Best score:", max_value
+
+###############################################################################
+# Add sentence length stats
+
+def stats(filename):
+    "Print stats for conll file."
+    with open(filename) as f:
+        gen = read_conll(f, proj=True)
+        c = Counter(len(tokens) for tokens in gen)
+        print "Top-10 sentence lengths"
+        print "-----------------------"
+        print "Length\tOccurrences"
+        for length, count in c.most_common()[:10]:
+            print '\t'.join([str(length), str(count)])
+        print "-----------------------"
+        print "Longest sentence: " + str(max(c))
+        print "Shortest sentence: " + str(min(c))
+        print "-----------------------"
+
