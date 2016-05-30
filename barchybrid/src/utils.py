@@ -190,7 +190,7 @@ def file_score(filename, key='average'):
 
 def filename_to_num(filename):
     "Helper function that takes a filename and returns number in that filename."
-    base_name = filename.split('.')[0]
+    base_name = filename.split('.conll')[0]
     num = base_name.split('_')[-1]
     return int(num)
 
