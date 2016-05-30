@@ -65,7 +65,7 @@ if __name__ == '__main__':
         if options.show_best_epoch:
             utils.print_best_epoch(result_files, 
                                    print_score=options.show_best_score, 
-                                   score_type='average')
+                                   score_type='unlabeled_attachment')
     else:
         with open(options.params, 'r') as paramsfp:
             words, w2i, pos, rels, stored_opt = pickle.load(paramsfp)
